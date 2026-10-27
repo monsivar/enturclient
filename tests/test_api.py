@@ -33,12 +33,47 @@ class _Response:
 class _Session:
     def __init__(self, response: _Response) -> None:
         self.response = response
+        self.calls: list[dict[str, object]] = []
 
     def post(self, url: str, **kwargs: object) -> _Response:
+        self.calls.append(kwargs)
         return self.response
 
 
 class EnturPublicTransportDataTests(IsolatedAsyncioTestCase):
+    async def test_update_requests_stop_place_coordinates(self) -> None:
+        """Request coordinates so stop-place sensors can be shown on maps."""
+        stop_id = "NSR:StopPlace:1"
+        session = _Session(
+            _Response(
+                {
+                    "data": {
+                        "stopPlaces": [
+                            {
+                                "id": stop_id,
+                                "name": "Test stop",
+                                "latitude": 60.293217,
+                                "longitude": 5.267429,
+                                "estimatedCalls": [],
+                            }
+                        ]
+                    }
+                }
+            )
+        )
+        client = EnturPublicTransportData(
+            "test", stops=[stop_id], web_session=session  # type: ignore[arg-type]
+        )
+
+        await client.update()
+
+        stop = client.get_stop_info(stop_id)
+        self.assertEqual(stop.latitude, 60.293217)
+        self.assertEqual(stop.longitude, 5.267429)
+        query = session.calls[0]["json"]["query"]  # type: ignore[index]
+        self.assertIn("latitude", query)
+        self.assertIn("longitude", query)
+
     async def test_update_processes_stop_places(self) -> None:
         stop_id = "NSR:StopPlace:1"
         client = EnturPublicTransportData(

@@ -26,6 +26,8 @@ GRAPHQL_STOP_TEMPLATE = """
   stopPlaces(ids: $stops) {
     id
     name
+    latitude
+    longitude
     estimatedCalls(
         whiteListed: $whitelist,
         numberOfDepartures: $numberOfDepartures) {
