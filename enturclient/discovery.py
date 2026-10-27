@@ -361,4 +361,3 @@ def _parse_stop_quays(payload: Any) -> tuple[EnturQuay, ...]:
                 ),
             )
     return tuple(quays.values())
-

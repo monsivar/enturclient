@@ -352,4 +352,3 @@ class EnturDiscoveryParserTests(IsolatedAsyncioTestCase):
         )
         self.assertEqual(place.selection_label, "Stop")
         self.assertEqual(place.type_icons, "🚉")
-

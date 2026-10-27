@@ -2,8 +2,7 @@
 
 import asyncio
 import logging
-from collections.abc import Mapping
-from typing import Optional
+from typing import Mapping, Optional
 
 import aiohttp
 
@@ -185,4 +184,3 @@ def _get_data(result: dict) -> dict:
     if not isinstance(data, dict):
         raise EnturApiError("Invalid Journey Planner response")
     return data
-

@@ -105,4 +105,3 @@ class EnturPublicTransportDataTests(IsolatedAsyncioTestCase):
 
         with self.assertRaises(EnturApiError):
             await client.expand_all_quays()
-

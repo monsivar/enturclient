@@ -112,4 +112,3 @@ query StopPlaceQuays($stopPlaceId: String!) {
   }
 }
 """
-
